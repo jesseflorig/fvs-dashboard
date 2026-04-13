@@ -1,18 +1,16 @@
 <!--
   SYNC IMPACT REPORT
   ==================
-  Version change: [unversioned template] → 1.0.0
-  Modified principles: N/A (initial ratification — all sections new)
+  Version change: 1.0.0 → 1.1.0
+  Modified principles: None renamed
   Added sections:
-    - Core Principles (I–V)
-    - Technology Stack
-    - Development Workflow
-    - Governance
+    - Principle VI. Untitled UI Design System (new)
+    - Technology Stack: added Untitled UI row
   Removed sections: N/A
   Templates requiring updates:
-    - .specify/templates/plan-template.md  ✅ — Constitution Check gates align with principles below
+    - .specify/templates/plan-template.md  ✅ — Constitution Check now covers Principles I–VI
     - .specify/templates/spec-template.md  ✅ — No mandatory section changes required
-    - .specify/templates/tasks-template.md ✅ — Phase structure and task categories remain valid
+    - .specify/templates/tasks-template.md ✅ — No phase structure changes required
   Deferred TODOs: None
 -->
 
@@ -72,6 +70,20 @@ dependency. Build output MUST target the `dist/` directory.
 **Rationale**: The project is self-hosted. Eliminating runtime server dependencies keeps the
 deployment footprint minimal and the upgrade path simple.
 
+### VI. Untitled UI Design System
+
+All UI MUST be built using Untitled UI library components wherever the library provides
+a suitable component. Custom components MUST follow Untitled UI's design language —
+spacing scale, color tokens, typography scale, border radius, and shadow conventions —
+so that custom work is visually indistinguishable from library components. Introducing
+a visual pattern that diverges from the Untitled UI system (custom spacing values,
+ad-hoc color choices, bespoke shadow values) is prohibited unless no Untitled UI
+equivalent exists and the deviation is documented in the plan.
+
+**Rationale**: A consistent design system reduces visual debt and decision fatigue. Using
+Untitled UI as the single source of design truth means every component, whether from the
+library or built custom, speaks the same visual language.
+
 ## Technology Stack
 
 These choices are fixed for the life of this project. Changes require a constitution amendment.
@@ -81,6 +93,7 @@ These choices are fixed for the life of this project. Changes require a constitu
 | UI framework | React (latest stable) |
 | Language | TypeScript — strict mode |
 | Styling | Tailwind CSS |
+| Component library | Untitled UI |
 | Build tool | Vite |
 | Package manager | npm |
 | Test runner | Vitest (if tests are added) |
@@ -117,6 +130,6 @@ This constitution supersedes all other project guidance. Amendments require:
 - PATCH: Wording clarifications, typo fixes, non-semantic refinements.
 
 All implementation plans MUST include a Constitution Check section validating compliance
-with Principles I–V before Phase 0 research begins.
+with Principles I–VI before Phase 0 research begins.
 
-**Version**: 1.0.0 | **Ratified**: 2026-04-11 | **Last Amended**: 2026-04-11
+**Version**: 1.1.0 | **Ratified**: 2026-04-11 | **Last Amended**: 2026-04-11
