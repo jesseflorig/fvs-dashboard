@@ -28,11 +28,15 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Spec Kit
+.specify/integrations/
+
 # Claude Code
 .claude/settings.local.json
+
+# Open Code
+.opencode/
 
 # Temp
 *.tmp
 .cache/
-.opencode/
-.specify/integrations/opencode/
