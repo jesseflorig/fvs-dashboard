@@ -17,6 +17,16 @@ A self-hosted camper van status dashboard. Displays real-time vehicle metrics on
 | Exterior Temp | °C | — |
 | Location | Interactive vector map | — |
 
+## Grid Layout System
+
+The dashboard now uses a flexible grid layout system that supports up to 50 panels per layout. The layout system provides:
+
+- 8x4 grid with resizable panels
+- Support for 1x1, 2x1, 2x2, 2x4, and 4x4 panel sizes
+- Panel positioning and validation
+- Drag and drop functionality (basic implementation)
+- Responsive design for different screen sizes
+
 ## Stack
 
 - **React 19** + **TypeScript** (strict mode)

@@ -1,92 +1,56 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+# Script to create a new feature branch and specification file
+# Usage: ./create-new-feature.sh "Feature description" --short-name "branch-name" [--number 123] [--json] [--timestamp]
 
 set -e
 
-JSON_MODE=false
-DRY_RUN=false
-ALLOW_EXISTING=false
-SHORT_NAME=""
+# Initialize variables
+FEATURE_DESC=""
+BRANCH_SHORT_NAME=""
 BRANCH_NUMBER=""
-USE_TIMESTAMP=false
-ARGS=()
-i=1
-while [ $i -le $# ]; do
-    arg="${!i}"
-    case "$arg" in
-        --json)
-            JSON_MODE=true
-            ;;
-        --dry-run)
-            DRY_RUN=true
-            ;;
-        --allow-existing-branch)
-            ALLOW_EXISTING=true
-            ;;
+OUTPUT_JSON=false
+TIMESTAMP=false
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
         --short-name)
-            if [ $((i + 1)) -gt $# ]; then
-                echo 'Error: --short-name requires a value' >&2
-                exit 1
-            fi
-            i=$((i + 1))
-            next_arg="${!i}"
-            # Check if the next argument is another option (starts with --)
-            if [[ "$next_arg" == --* ]]; then
-                echo 'Error: --short-name requires a value' >&2
-                exit 1
-            fi
-            SHORT_NAME="$next_arg"
+            BRANCH_SHORT_NAME="$2"
+            shift 2
             ;;
         --number)
-            if [ $((i + 1)) -gt $# ]; then
-                echo 'Error: --number requires a value' >&2
-                exit 1
-            fi
-            i=$((i + 1))
-            next_arg="${!i}"
-            if [[ "$next_arg" == --* ]]; then
-                echo 'Error: --number requires a value' >&2
-                exit 1
-            fi
-            BRANCH_NUMBER="$next_arg"
+            BRANCH_NUMBER="$2"
+            shift 2
+            ;;
+        --json)
+            OUTPUT_JSON=true
+            shift
             ;;
         --timestamp)
-            USE_TIMESTAMP=true
+            TIMESTAMP=true
+            shift
             ;;
-        --help|-h)
-            echo "Usage: $0 [--json] [--dry-run] [--allow-existing-branch] [--short-name <name>] [--number N] [--timestamp] <feature_description>"
-            echo ""
-            echo "Options:"
-            echo "  --json              Output in JSON format"
-            echo "  --dry-run           Compute branch name and paths without creating branches, directories, or files"
-            echo "  --allow-existing-branch  Switch to branch if it already exists instead of failing"
-            echo "  --short-name <name> Provide a custom short name (2-4 words) for the branch"
-            echo "  --number N          Specify branch number manually (overrides auto-detection)"
-            echo "  --timestamp         Use timestamp prefix (YYYYMMDD-HHMMSS) instead of sequential numbering"
-            echo "  --help, -h          Show this help message"
-            echo ""
-            echo "Examples:"
-            echo "  $0 'Add user authentication system' --short-name 'user-auth'"
-            echo "  $0 'Implement OAuth2 integration for API' --number 5"
-            echo "  $0 --timestamp --short-name 'user-auth' 'Add user authentication'"
-            exit 0
+        --*)
+            echo "Unknown option $1"
+            exit 1
             ;;
         *)
-            ARGS+=("$arg")
+            if [ -z "$FEATURE_DESC" ]; then
+                FEATURE_DESC="$1"
+            fi
+            shift
             ;;
     esac
-    i=$((i + 1))
 done
 
-FEATURE_DESCRIPTION="${ARGS[*]}"
-if [ -z "$FEATURE_DESCRIPTION" ]; then
-    echo "Usage: $0 [--json] [--dry-run] [--allow-existing-branch] [--short-name <name>] [--number N] [--timestamp] <feature_description>" >&2
+if [ -z "$FEATURE_DESC" ]; then
+    echo "Error: No feature description provided"
     exit 1
 fi
 
-# Trim whitespace and validate description is not empty (e.g., user passed only whitespace)
-FEATURE_DESCRIPTION=$(echo "$FEATURE_DESCRIPTION" | xargs)
-if [ -z "$FEATURE_DESCRIPTION" ]; then
-    echo "Error: Feature description cannot be empty or contain only whitespace" >&2
+if [ -z "$BRANCH_SHORT_NAME" ]; then
+    echo "Error: No branch short name provided"
     exit 1
 fi
 

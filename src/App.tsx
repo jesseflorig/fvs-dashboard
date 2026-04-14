@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import type { VehicleSnapshot } from './types/vehicle'
 import { vehicleService } from './services/vehicleService'
+import { SAMPLE_LAYOUTS } from './data/grid-layouts'
+import GridContainer from './components/layouts/GridContainer'
+import PanelComponent from './components/panels/Panel'
 import { FuelPanel } from './components/panels/FuelPanel'
 import { OilPanel } from './components/panels/OilPanel'
 import { DoorLockPanel } from './components/panels/DoorLockPanel'
@@ -25,6 +28,19 @@ export function App() {
   }
 
   const { status, location } = snapshot
+  const layout = SAMPLE_LAYOUTS[0]
+
+  // Map panel content IDs to actual components
+  const panelContentMap: Record<string, JSX.Element> = {
+    'fuel': <FuelPanel value={status.fuelLevel} />,
+    'oil': <OilPanel value={status.oilLevel} />,
+    'battery': <BatteryPanel value={status.batteryVoltage} />,
+    'door-lock': <DoorLockPanel locked={status.doorLocked} />,
+    'mileage': <MileagePanel value={status.mileage} />,
+    'interiorTemp': <TemperaturePanel label="Interior Temp" value={status.interiorTemp} />,
+    'exteriorTemp': <TemperaturePanel label="Outside Temp" value={status.exteriorTemp} />,
+    'location': <LocationPanel location={location} />
+  }
 
   return (
     <div className="h-screen overflow-hidden bg-gray-50 flex flex-col">
@@ -37,25 +53,13 @@ export function App() {
 
       {/* Dashboard — fills remaining viewport height */}
       <main className="flex-1 flex flex-col gap-4 p-6 min-h-0">
-        {/* Row 1: Fuel, Oil, Battery, Door Lock */}
-        <div className="grid grid-cols-4 gap-4 shrink-0">
-          <FuelPanel value={status.fuelLevel} />
-          <OilPanel value={status.oilLevel} />
-          <BatteryPanel value={status.batteryVoltage} />
-          <DoorLockPanel locked={status.doorLocked} />
-        </div>
-
-        {/* Row 2: Mileage, Interior Temp, Exterior Temp */}
-        <div className="grid grid-cols-4 gap-4 shrink-0">
-          <MileagePanel value={status.mileage} />
-          <TemperaturePanel label="Interior Temp" value={status.interiorTemp} />
-          <TemperaturePanel label="Exterior Temp" value={status.exteriorTemp} />
-        </div>
-
-        {/* Row 3: Map — fills remaining space */}
-        <div className="flex-1 min-h-0">
-          <LocationPanel location={location} />
-        </div>
+        <GridContainer layout={layout}>
+          {layout.panels.map(panel => (
+            <PanelComponent key={panel.id} panel={panel}>
+              {panelContentMap[panel.contentId] || <div>Panel content not found</div>}
+            </PanelComponent>
+          ))}
+        </GridContainer>
       </main>
     </div>
   )

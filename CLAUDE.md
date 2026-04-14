@@ -1,8 +1,10 @@
 # fvs-dashboard Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-04-11
+Auto-generated from all feature plans. Last updated: 2026-04-13
 
 ## Active Technologies
+- TypeScript 5 (strict mode) + React 19, Vite 6, Tailwind CSS v4, Untitled UI (003-)
+- Static fixture files in `src/data/` (003-)
 
 - TypeScript 5 (strict mode), targeting ES2020 + React 19, Vite 6, Tailwind CSS v4, Untitled UI (CLI init), (001-initial-dashboard)
 
@@ -38,6 +40,7 @@ npm run lint    # Lint
 - Follow Untitled UI design tokens (color, spacing, typography) for all UI
 
 ## Recent Changes
+- 003-: Added TypeScript 5 (strict mode) + React 19, Vite 6, Tailwind CSS v4, Untitled UI
 
 - 001-initial-dashboard: Added TypeScript 5 (strict mode), targeting ES2020 + React 19, Vite 6, Tailwind CSS v4, Untitled UI (CLI init),
 
